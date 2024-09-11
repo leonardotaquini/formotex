@@ -1,10 +1,10 @@
 import prisma from "../../config/prisma";
-import { RegisterAuth } from "../interfaces/auth.interface";
+import { LoginAuth, RegisterAuth } from "../interfaces/auth.interface";
 import jwtService from "../../config/jwt";
 import { hashPassword } from "../../utils/hash.password";
 
 class AuthService {
-  async login(email: string, password: string) {
+  async login( userReq: LoginAuth ) {
     // const user = await prisma.user.findUnique({
     // where: {
     //     email,
@@ -28,10 +28,11 @@ class AuthService {
   async register(userReq: RegisterAuth) {
     try {
         userReq.password = await hashPassword(userReq.password);
-        const user = await prisma.user.create({
+        const newUser = await prisma.user.create({
           data: userReq,
         });
-        return user;
+        const token = jwtService.generateToken(newUser.id);
+        return token;
     } catch (error) {
         console.log(error);
         throw new Error('Internal server error');
