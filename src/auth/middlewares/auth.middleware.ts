@@ -38,8 +38,9 @@ export const authAdminMiddleware = ( req: Request, res: Response, next: NextFunc
     return res.status(401).json({ message: "Unauthorized" });
   }
   const payload = jwtService.verifyToken(token);
+
   if (!payload) {
-    return res.status(401).json({ message: "Invalid token" });
+    return res.status(401).json({ message: "" });
   }
   const { userId } = payload;
 
