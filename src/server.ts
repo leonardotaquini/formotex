@@ -4,8 +4,8 @@ import 'dotenv/config';
 import { enviroments } from './config/enviroments';
 import appRouter from './router/app.routes';
 import userRouter from './user/routes/user.routes';
-import authRoutes from './auth/routes/auth.routes';
-
+import authRouter from './auth/routes/auth.routes';
+import equipmentRouter from './equipment/routes/equipment.route';
 
 class Server {
   private app: Application;
@@ -27,7 +27,8 @@ class Server {
   routes() {
     this.app.use('/api', appRouter);
     this.app.use('/api/users', userRouter)
-    this.app.use('/api/auth', authRoutes);
+    this.app.use('/api/auth', authRouter);
+    this.app.use('/api/equipment', equipmentRouter);    
 
   }
 

@@ -36,8 +36,7 @@ class AuthService {
       const token = jwtService.generateToken(newUser.id);
       return token;
     } catch (error) {
-      console.log(error);
-      throw new Error(error as string);
+      throw error;
     }
   }
 
@@ -49,8 +48,7 @@ class AuthService {
       }
       return jwtService.generateToken(payload.userId);
     } catch (error) {
-      console.log(error);
-      throw new Error("Internal server error");
+      throw error
     }
   }
 

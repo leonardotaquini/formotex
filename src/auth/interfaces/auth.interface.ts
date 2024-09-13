@@ -1,3 +1,4 @@
+import { Request } from "express";
 
 
 export interface LoginAuth {
@@ -10,4 +11,8 @@ export interface RegisterAuth {
     password: string;
     name: string;
     lastname: string;   
+}
+
+export interface RegisterUserAuth extends Request{
+    body: RegisterAuth;
 }

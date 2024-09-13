@@ -11,7 +11,7 @@ export const authMiddleware = ( req: Request, res: Response, next: NextFunction 
   if (!payload) {
     return res.status(401).json({ message: "Invalid token" });
   }
-  const userIdParam = req.params.id;
+  const userIdParam = req.params?.id;
   const { userId } = payload;
   
   if (userIdParam && userIdParam !== userId) {
@@ -45,7 +45,7 @@ export const authAdminMiddleware = ( req: Request, res: Response, next: NextFunc
   const payload = jwtService.verifyToken(token);
 
   if (!payload) {
-    return res.status(401).json({ message: "" });
+    return res.status(401).json({ message: "Invalid token" });
   }
   const { userId } = payload;
 

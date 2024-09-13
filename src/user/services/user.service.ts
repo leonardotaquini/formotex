@@ -1,4 +1,5 @@
 import prisma from '../../config/prisma';
+import { hashPassword } from '../../utils/hash.password';
 import { UserDTO } from '../interfaces/user.interface';
 
 class UserService {
@@ -37,6 +38,10 @@ class UserService {
     try {
       const existUser = await this.getUserById(id);
       if (!existUser) throw new Error('User not found');
+      const { password } = existUser;
+      if ( password ) {
+        user.password = await hashPassword(user.password);
+      }
       const updatedUser = await prisma.user.update({ where: { id: existUser.id }, data: user });
       return updatedUser;
     } catch (error) {
