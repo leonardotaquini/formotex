@@ -11,8 +11,13 @@ export const authMiddleware = ( req: Request, res: Response, next: NextFunction 
   if (!payload) {
     return res.status(401).json({ message: "Invalid token" });
   }
-
+  const userIdParam = req.params.id;
   const { userId } = payload;
+  
+  if (userIdParam && userIdParam !== userId) {
+    return res.status(403).json({ message: "Forbidden" });
+  }
+
 
   prisma.user
     .findUnique({
@@ -24,12 +29,12 @@ export const authMiddleware = ( req: Request, res: Response, next: NextFunction 
       if (!user) {
         return res.status(401).json({ message: "Unauthorized" });
       }
+      next();
     })
     .catch((err) => {
       console.error(err);
       return res.status(500).json({ message: "Internal Server Error" });
     });
-    next();
 };
 
 export const authAdminMiddleware = ( req: Request, res: Response, next: NextFunction ) => {
@@ -55,12 +60,12 @@ export const authAdminMiddleware = ( req: Request, res: Response, next: NextFunc
         return res.status(401).json({ message: "Unauthorized" });
       }
         if (user.role !== "ADMIN") {
-            return res.status(403).json({ message: "Forbidden" });
+         return res.status(403).json({ message: "Forbidden" });
         }
+        next();
     })
     .catch((err) => {
       console.error(err);
       return res.status(500).json({ message: "Internal Server Error" });
     });
-    next();
 };

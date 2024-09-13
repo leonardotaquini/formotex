@@ -5,22 +5,26 @@ import { comparePassword, hashPassword } from "../../utils/hash.password";
 
 class AuthService {
   async login(userReq: LoginAuth) {
-    const user = await prisma.user.findUnique({
-      where: {
-        email: userReq.email,
-      },
-    });
-
-    if (!user) {
-      throw new Error("Invalid credentials");
+    try {
+      const user = await prisma.user.findUnique({
+        where: {
+          email: userReq.email,
+        },
+      });
+      if (!user) {
+        throw new Error("Invalid credentials");
+      }
+      const isPasswordValid = await comparePassword(userReq.password, user.password);
+  
+      if (!isPasswordValid) {
+        throw new Error("Invalid password");
+      }
+      return jwtService.generateToken(user.id);
+      
+    } catch (error) {
+      console.log(error);
+      throw new Error(error as string);
     }
-
-    const isPasswordValid = await comparePassword(userReq.password, user.password);
-
-    if (!isPasswordValid) {
-      throw new Error("Invalid credentials");
-    }
-    return jwtService.generateToken(user.id);
   }
 
   async register(userReq: RegisterAuth) {
@@ -33,7 +37,7 @@ class AuthService {
       return token;
     } catch (error) {
       console.log(error);
-      throw new Error("Internal server error");
+      throw new Error(error as string);
     }
   }
 
