@@ -35,7 +35,6 @@ async refreshToken(req: Request, res: Response){
         const token = await authService.refreshToken(req.body.refreshToken);
         return res.json({token});
     } catch (error: ErrorInterface | any) {
-        console.log(error)
         return res.status(500).json({ message: error.message });
     }
 }
