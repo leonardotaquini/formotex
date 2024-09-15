@@ -19,7 +19,7 @@ class AuthService {
       if (!isPasswordValid) {
         throw new Error("Invalid password");
       }
-      return jwtService.generateToken(user.id);
+      return jwtService.generateToken( user.id, user.role );
       
     } catch (error) {
       console.log(error);
@@ -33,7 +33,7 @@ class AuthService {
       const newUser = await prisma.user.create({
         data: userReq,
       });
-      const token = jwtService.generateToken(newUser.id);
+      const token = jwtService.generateToken(newUser.id, newUser.role);
       return token;
     } catch (error) {
       throw error;
@@ -46,7 +46,7 @@ class AuthService {
       if (!payload) {
         throw new Error("Invalid token");
       }
-      return jwtService.generateToken(payload.userId);
+      return jwtService.generateToken(payload.userId, payload.role);
     } catch (error) {
       throw error
     }

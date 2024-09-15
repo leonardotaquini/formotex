@@ -3,6 +3,7 @@ import { enviroments } from './enviroments';
 
 interface JwtPayload {
   userId: string;
+  role: string;
 }
 
 class JwtService {
@@ -14,8 +15,8 @@ class JwtService {
     this.expiresIn = '1h';
   }
 
-  generateToken(userId: string): string {
-    return jwt.sign({ userId }, this.secret, {
+  generateToken( userId: string, role: string): string {
+    return jwt.sign({ userId, role }, this.secret, {
       expiresIn: this.expiresIn,
     });
   }

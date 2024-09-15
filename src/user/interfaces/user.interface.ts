@@ -1,3 +1,4 @@
+import { Request } from 'express';
 
 
 export interface User {
@@ -16,9 +17,13 @@ export interface UserDTO {
     lastname: string;
     email: string;
     password: string;
-    role: Role;
+}
+
+export interface UserRequest<T> extends Request {
+    body: T;
 }
 
 
-type Role = 'ADMIN' | 'USER';
+export type Role = 'ADMIN' | 'USER';
+
 

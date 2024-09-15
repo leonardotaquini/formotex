@@ -15,6 +15,9 @@ export const authMiddleware = ( req: Request, res: Response, next: NextFunction 
   const { userId } = payload;
   
   if (userIdParam && userIdParam !== userId) {
+    if (payload.role === "ADMIN") {
+      return next();
+    }
     return res.status(403).json({ message: "Forbidden" });
   }
 
