@@ -5,8 +5,8 @@ export interface Equipment {
   model: string;
   acquisition: Date;
   location: string;
-  price: number;
-  stock: number;
+  organization: string;
+  status: EquipmentStatus;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -16,10 +16,24 @@ export interface EquipmentRequest {
     brand: string;
     model: string;
     location: string;
+    status: EquipmentStatus;
     acquisition: Date;
-    price: number;
-    stock: number;
+    organization: string;
     }
 
+
+    enum EquipmentStatus {
+      Available = "Available",
+      Assigned = "Assigned",
+      InRepair = "InRepair",
+      UnderReview = "UnderReview",
+      OnLoan = "OnLoan",
+      Obsolete = "Obsolete",
+      Decommissioning = "Decommissioning",
+      Decommissioned = "Decommissioned",
+      PendingAssignment = "PendingAssignment",
+      Reserved = "Reserved"
+    }
+    
 
 
